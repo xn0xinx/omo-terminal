@@ -79,36 +79,49 @@
 
           <!-- 3-Column Retro Display -->
           <main id="main-display">
-            <!-- Left Column: Directories, file trees, shell invocations -->
+            <!-- Left Column: Multi-Deck Hardware & System Telemetry -->
             <aside id="col-left" class="terminal-col">
-              <div class="col-title">// SYSTEM TELEMETRY</div>
-              <div id="telemetry-left" class="telemetry-scroll">
-                <div class="t-line dim">root@omarchy:~$</div>
-                <div class="t-line">&gt; uname -srmo</div>
-                <div class="t-line dim">Linux 6.13.5-zen1-1-zen x86_64 GNU/Linux</div>
-                <div class="t-line">&gt; lscpu | grep "Model name"</div>
-                <div class="t-line dim">Intel(R) Core(TM) i5-6500T @ 2.50GHz</div>
-                <div class="t-line">&gt; lspci -k | grep -A 2 -i vga</div>
-                <div class="t-line dim">Intel HD Graphics 530 (rev 06)</div>
-                <div class="t-line dim">driver: i915 / vaapi</div>
-                <div class="t-line">&gt; pactl info | grep "Server Name"</div>
-                <div class="t-line dim">PulseAudio (on PipeWire 1.4.1)</div>
-                <div class="t-line">&gt; hyprctl monitors -j | jq -r '.[0].model'</div>
-                <div class="t-line dim">AOC 32G1WG4 (144Hz DP-1)</div>
-                <div class="t-line">&gt; btrfs filesystem df /home</div>
-                <div class="t-line dim">Data, single: total=180.00GiB, used=62.40GiB</div>
-                <div class="t-line">&gt; omo_core status</div>
-                <div class="t-line dim">STATUS: ONLINE [READY]</div>
+              <div class="telemetry-panel">
+                <div class="panel-header">┌──[ HARDWARE SENSORS & CPU CORES ]</div>
+                <pre id="sensor-telemetry" class="panel-content"></pre>
+              </div>
+
+              <div class="telemetry-panel flex-grow">
+                <div class="panel-header">├──[ SYSTEM TELEMETRY & RUNTIME STREAM ]</div>
+                <div id="telemetry-left" class="telemetry-scroll panel-content">
+                  <div class="t-line dim">root@omarchy:~$</div>
+                  <div class="t-line">&gt; uname -srmo</div>
+                  <div class="t-line dim">Linux 6.13.5-zen1-1-zen x86_64 GNU/Linux</div>
+                  <div class="t-line">&gt; lscpu | grep "Model name"</div>
+                  <div class="t-line dim">Intel(R) Core(TM) i5-6500T @ 2.50GHz</div>
+                  <div class="t-line">&gt; lspci -k | grep -A 2 -i vga</div>
+                  <div class="t-line dim">Intel HD Graphics 530 (rev 06) [vaapi]</div>
+                  <div class="t-line">&gt; pactl info | grep "Server Name"</div>
+                  <div class="t-line dim">PulseAudio (on PipeWire 1.4.1)</div>
+                  <div class="t-line">&gt; hyprctl monitors -j | jq -r '.[0].model'</div>
+                  <div class="t-line dim">AOC 32G1WG4 (144Hz DP-1 active)</div>
+                  <div class="t-line">&gt; btrfs filesystem df /home</div>
+                  <div class="t-line dim">Data, single: total=180.00GiB, used=62.40GiB</div>
+                  <div class="t-line">&gt; omo_core status</div>
+                  <div class="t-line dim">STATUS: ONLINE [BUFFER 12.5 FPS]</div>
+                </div>
+              </div>
+
+              <div class="telemetry-panel">
+                <div class="panel-header">└──[ IPC & NETWORK MATRIX ]</div>
+                <pre id="socket-telemetry" class="panel-content"></pre>
               </div>
             </aside>
-
 
             <!-- Center Column: Animated ASCII Omo Mascot & Cyber Mission Control -->
             <section id="col-center">
               <div id="mascot-hud-top" class="mascot-hud-bar">
                 <span class="hud-tag">┌──[ OMO_CORE // HP-600G3 // SKYLAKE ]</span>
-                <span class="hud-fill"></span>
+                <span id="hud-waveform" class="hud-wave"> ▂▃▅▆▇▆▅▃▂ </span>
                 <span class="hud-tag">[ AGY // HYPRLAND // BTRFS ]──┐</span>
+              </div>
+              <div id="hud-rip-bar" class="mascot-hud-sub">
+                <span>├──[ RIP: 0x00007FFF00492B10 // CS: 0x0033 // SS: 0x002B // RFLAGS: [IF,ZF,PF,AF] ]──┤</span>
               </div>
 
               <div id="mascot-viewport">
@@ -128,35 +141,49 @@
                 </div>
               </div>
 
-              <div id="mascot-hud-bottom" class="mascot-hud-bar">
-                <span id="hud-reg-stream" class="hud-tag">└──[ REG: RAX=0x1000 RBX=0x7FFE RCX=0x0040 RDX=0x2000 ]</span>
+              <div id="mascot-hud-bottom" class="mascot-hud-sub">
+                <span id="hud-reg-stream">├──[ RAX:0x10A0 RBX:0x7FFE RCX:0x0042 RDX:0x2080 RSI:0x0010 RDI:0x0001 R8:0x0004 R9:0x0008 ]──┤</span>
+              </div>
+              <div id="hud-control-bar" class="mascot-hud-bar">
+                <span id="hud-control-regs" class="hud-tag">└──[ RSP: 0x7FFFFFFFDE80  RBP: 0x7FFFFFFFDEC0  CR0: 0x80050033  CR3: 0x00102000 ]──┘</span>
                 <span class="hud-fill"></span>
-                <span class="hud-tag">[ BUFFER: ACTIVE // 12.5 FPS ]──┘</span>
+                <span class="hud-tag">[ 12.5 FPS // ACTIVE ]</span>
               </div>
 
               <div id="action-ticker">&gt; OMO: READY &lt;</div>
             </section>
 
-            <!-- Right Column: Code snippets, syscalls, live diffs -->
+            <!-- Right Column: AI Pipeline, AST, and Syscall Trace -->
             <aside id="col-right" class="terminal-col">
-              <div class="col-title">// SOURCE STREAM</div>
-              <div id="telemetry-right" class="telemetry-scroll">
-                <div class="t-line dim">ls -la</div>
-                <div class="t-line dim">cd /bin</div>
-                <div class="t-line">/etc/</div>
-                <div class="t-line">kernel_panic.log</div>
-                <div class="t-line keyword">int main() {</div>
-                <div class="t-line indent">nr = &quot;$&quot;;</div>
-                <div class="t-line indent">printf(&quot;%s\n&quot;);</div>
-                <div class="t-line keyword">}</div>
-                <div class="t-line keyword">while(true) {</div>
-                <div class="t-line indent dim">// loop active</div>
-                <div class="t-line keyword">}</div>
-                <div class="t-line hex">0x4F</div>
-                <div class="t-line func">sys_call()</div>
-                <div class="t-line indent">printf(&quot;&quot;);</div>
-                <div class="t-line indent">bool alive = true;</div>
-                <div class="t-line dim">0x10 alive;</div>
+              <div class="telemetry-panel">
+                <div class="panel-header">┌──[ AGY STREAM PIPELINE // AI ENGINE ]</div>
+                <pre id="engine-telemetry" class="panel-content"></pre>
+              </div>
+
+              <div class="telemetry-panel flex-grow">
+                <div class="panel-header">├──[ SOURCE & AST SYMBOL MATRIX ]</div>
+                <div id="telemetry-right" class="telemetry-scroll panel-content">
+                  <div class="t-line dim">ls -la</div>
+                  <div class="t-line dim">cd /bin</div>
+                  <div class="t-line">/etc/</div>
+                  <div class="t-line">kernel_panic.log</div>
+                  <div class="t-line keyword">├── FunctionDef: _open_ui(cfg, url)</div>
+                  <div class="t-line indent">│   ├── Call: util.which(*_BROWSERS)</div>
+                  <div class="t-line indent">│   └── Spawn: chromium --app</div>
+                  <div class="t-line keyword">├── AsyncFunc: _serve(cfg, engine)</div>
+                  <div class="t-line indent dim">│   ├── Lifespan: engine.start()</div>
+                  <div class="t-line indent">│   └── Uvicorn: 127.0.0.1:8795</div>
+                  <div class="t-line hex">0x4F</div>
+                  <div class="t-line func">├── ClassDef: Engine(cfg)</div>
+                  <div class="t-line indent">│   ├── Method: _spawn_process()</div>
+                  <div class="t-line indent">│   └── Queue: broadcast(event)</div>
+                  <div class="t-line dim">└── Shader: crt_barrel_pipeline</div>
+                </div>
+              </div>
+
+              <div class="telemetry-panel">
+                <div class="panel-header">└──[ KERNEL SYSCALL & eBPF TRACE ]</div>
+                <pre id="trace-telemetry" class="panel-content"></pre>
               </div>
             </aside>
           </main>

@@ -5,7 +5,23 @@ All notable changes to `omo-terminal` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.2.0] - 2026-09-14
+
+### Added
+- **Hyper-Dense Cyberpunk Mission Control & Multi-Deck Telemetry**: Divided flanking columns into structured multi-deck telemetry modules, completely eliminating blank screen space in fullscreen mode:
+  - Quad-core CPU load bar gauges, thermal metrics, Skylake HD 530 iGPU, and PipeWire latency.
+  - Active network & IPC socket matrix (`8795`, `8792`, `8788`, Hyprland socket2, PipeWire).
+  - Live AI engine pipeline metrics (token throughput gauge, context window meter, temperature).
+  - Real-time scrolling eBPF and kernel syscall trace (`epoll_wait`, `read`, `futex`, `clock_gettime`).
+  - Top HUD ASCII audio waveform frequency visualizer dancing rhythmically on the animation clock.
+  - Expanded 64-bit register bank reporting instruction pointer (`RIP`), code segments, flags, and control registers (`CR0`, `CR3`).
+- **Super-Animated Mascot Dynamics & Micro-Articulations**: Upgraded Omo with continuous organic movement on every single tick:
+  - Rhythmic skate sneaker beat-tapping synchronized with the 12.5 fps clock.
+  - Animated hoodie drawstrings swaying organically with breathing rhythm.
+  - Periodic reflection glint sweeping across his round glasses frames.
+  - Natural saccadic eye movements tracking the disassembly and hex dump flanks.
+  - Rapid natural double-blinking and playful eyebrow bounces.
+  - Accelerated flourish frequency (~every 2.5–3.5s) with new animations including thumbs-up, wave wink, and fidgeting.
 
 ### Fixed
 - **Mascot Face & Posture Realignment**: Rebuilt the monospace coordinate grid for the code-composed Omo mascot so hair, glasses, cheeks, chin, neck, torso, and sneakers all share a strict centerline (column 12).
