@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>OmoTerminal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <!-- CRT Monitor Physical Bezel -->
+  <div id="crt-frame">
+    <div id="crt-bezel">
+      <div id="crt-screen">
+        <canvas id="crt-canvas"></canvas>
+
+        <!-- CRT Glass Glare & Scanline Texture -->
+        <div id="crt-glare"></div>
+        <div id="crt-scanlines"></div>
+
+        <!-- Terminal Workspace Content -->
+        <div id="terminal-content">
+          <!-- Top ASCII Header & Status -->
+          <header id="top-bar">
+            <div id="banner-col">
+              <pre id="omo-banner">
+ ___  __  __  ___  
+/ _ \|  \/  |/ _ \ 
+| | | | |\/| | | | |
+| |_| | |  | | |_| |
+ \___/|_|  |_|\___/ </pre>
+              <div id="status-line">
+                <span class="prompt-green">STATUS:</span> <span id="status-badge">ONLINE [READY]</span>
+                <div id="status-sub">&gt; ./omo_core</div>
+              </div>
+            </div>
+
+            <div id="controls-col">
+              <div class="bracket-group">
+                <label for="model-select">[ MODEL:</label>
+                <select id="model-select">
+                  <option value="gemini-3.8-flash-high">Gemini 3.8 Flash</option>
+                  <option value="gemini-3.7-flash-high">Gemini 3.7 Flash</option>
+                  <option value="gemini-3.1-pro-high">Gemini 3.1 Pro</option>
+                  <option value="claude-sonnet-4-6">Claude Sonnet 4.6</option>
+                  <option value="claude-opus-4-6-thinking">Claude Opus 4.6</option>
+                  <option value="gpt-oss-120b-medium">GPT-OSS 120B</option>
+                </select>
+                <span>]</span>
+              </div>
+
+              <div class="bracket-group">
+                <span>[ THEME:</span>
+                <select id="theme-select" title="CRT Color Scheme">
+                  <option value="classic-green">Classic Green</option>
+                  <option value="os-default">OS Default</option>
+                  <option value="amber-crt">Amber Phosphor</option>
+                  <option value="cyber-cyan">Cyberpunk Cyan</option>
+                  <option value="tokyo-night">Tokyo Night</option>
+                  <option value="blood-matrix">Blood Matrix</option>
+                  <option value="synthwave">Synthwave 84</option>
+                </select>
+                <button id="theme-flip-btn" class="bracket-btn" title="Quick flip between Classic Green and OS Default">FLIP</button>
+                <span>]</span>
+              </div>
+
+              <div class="bracket-group">
+                <span>[ CRT:</span>
+                <button id="crt-toggle" class="bracket-btn">CURVE: ON</button>
+                <span>]</span>
+              </div>
+
+              <div class="bracket-group">
+                <span>[ DIALOG:</span>
+                <button id="drawer-toggle" class="bracket-btn">SHOW</button>
+                <span>]</span>
+              </div>
+            </div>
+          </header>
+
+          <!-- 3-Column Retro Display -->
+          <main id="main-display">
+            <!-- Left Column: Directories, file trees, shell invocations -->
+            <aside id="col-left" class="terminal-col">
+              <div class="col-title">// SYSTEM TELEMETRY</div>
+              <div id="telemetry-left" class="telemetry-scroll">
+                <div class="t-line dim">root@omarchy:~$</div>
+                <div class="t-line">&gt; uname -srmo</div>
+                <div class="t-line dim">Linux 6.13.5-zen1-1-zen x86_64 GNU/Linux</div>
+                <div class="t-line">&gt; lscpu | grep "Model name"</div>
+                <div class="t-line dim">Intel(R) Core(TM) i5-6500T @ 2.50GHz</div>
+                <div class="t-line">&gt; lspci -k | grep -A 2 -i vga</div>
+                <div class="t-line dim">Intel HD Graphics 530 (rev 06)</div>
+                <div class="t-line dim">driver: i915 / vaapi</div>
+                <div class="t-line">&gt; pactl info | grep "Server Name"</div>
+                <div class="t-line dim">PulseAudio (on PipeWire 1.4.1)</div>
+                <div class="t-line">&gt; hyprctl monitors -j | jq -r '.[0].model'</div>
+                <div class="t-line dim">AOC 32G1WG4 (144Hz DP-1)</div>
+                <div class="t-line">&gt; btrfs filesystem df /home</div>
+                <div class="t-line dim">Data, single: total=180.00GiB, used=62.40GiB</div>
+                <div class="t-line">&gt; omo_core status</div>
+                <div class="t-line dim">STATUS: ONLINE [READY]</div>
+              </div>
+            </aside>
+
+
+            <!-- Center Column: Animated ASCII Omo Mascot & Cyber Mission Control -->
+            <section id="col-center">
+              <div id="mascot-hud-top" class="mascot-hud-bar">
+                <span class="hud-tag">┌──[ OMO_CORE // HP-600G3 // SKYLAKE ]</span>
+                <span class="hud-fill"></span>
+                <span class="hud-tag">[ AGY // HYPRLAND // BTRFS ]──┐</span>
+              </div>
+
+              <div id="mascot-viewport">
+                <!-- Left Flank: Assembly / Opcode Live Stream -->
+                <div id="mascot-flank-left" class="mascot-flank">
+                  <div class="flank-header">// DISASSEMBLY (x86_64)</div>
+                  <pre id="flank-left-code" class="flank-code"></pre>
+                </div>
+
+                <!-- Center: Animated Mascot -->
+                <pre id="omo-art"></pre>
+
+                <!-- Right Flank: Hex Memory Dump Stream -->
+                <div id="mascot-flank-right" class="mascot-flank">
+                  <div class="flank-header">// MEMORY DUMP (VIRT_ADDR)</div>
+                  <pre id="flank-right-code" class="flank-code"></pre>
+                </div>
+              </div>
+
+              <div id="mascot-hud-bottom" class="mascot-hud-bar">
+                <span id="hud-reg-stream" class="hud-tag">└──[ REG: RAX=0x1000 RBX=0x7FFE RCX=0x0040 RDX=0x2000 ]</span>
+                <span class="hud-fill"></span>
+                <span class="hud-tag">[ BUFFER: ACTIVE // 12.5 FPS ]──┘</span>
+              </div>
+
+              <div id="action-ticker">&gt; OMO: READY &lt;</div>
+            </section>
+
+            <!-- Right Column: Code snippets, syscalls, live diffs -->
+            <aside id="col-right" class="terminal-col">
+              <div class="col-title">// SOURCE STREAM</div>
+              <div id="telemetry-right" class="telemetry-scroll">
+                <div class="t-line dim">ls -la</div>
+                <div class="t-line dim">cd /bin</div>
+                <div class="t-line">/etc/</div>
+                <div class="t-line">kernel_panic.log</div>
+                <div class="t-line keyword">int main() {</div>
+                <div class="t-line indent">nr = &quot;$&quot;;</div>
+                <div class="t-line indent">printf(&quot;%s\n&quot;);</div>
+                <div class="t-line keyword">}</div>
+                <div class="t-line keyword">while(true) {</div>
+                <div class="t-line indent dim">// loop active</div>
+                <div class="t-line keyword">}</div>
+                <div class="t-line hex">0x4F</div>
+                <div class="t-line func">sys_call()</div>
+                <div class="t-line indent">printf(&quot;&quot;);</div>
+                <div class="t-line indent">bool alive = true;</div>
+                <div class="t-line dim">0x10 alive;</div>
+              </div>
+            </aside>
+          </main>
+
+          <!-- Bottom Command Bar -->
+          <footer id="bottom-bar">
+            <div id="cli-prompt-label">root@system:~/Work$</div>
+            <input type="text" id="cli-input" placeholder="Type prompt for Antigravity (Enter to send)..." autocomplete="off" spellcheck="false" autofocus>
+            <button id="cli-send-btn">[SEND]</button>
+            <button id="cli-stop-btn" class="hidden">[HALT]</button>
+          </footer>
+
+          <!-- BBS Teletype Dialogue Console Drawer -->
+          <div id="bbs-drawer" class="drawer-hidden">
+            <div id="bbs-drawer-header">
+              <span class="bbs-title">&gt;&gt;&gt; TELETYPE CONSOLE // ASSISTANT RESPONSE &lt;&lt;&lt;</span>
+              <div class="bbs-tools">
+                <button id="bbs-copy-btn">[COPY]</button>
+                <button id="bbs-close-btn">[MINIMIZE]</button>
+              </div>
+            </div>
+            <div id="bbs-drawer-body">
+              <div id="bbs-output"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="crt.js"></script>
+  <script src="mascot.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

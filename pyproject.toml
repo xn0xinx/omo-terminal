@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "omo-terminal"
+version = "0.1.0"
+description = "Retro green-phosphor CRT desktop front-end for Antigravity with animated ASCII Omo mascot"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "xn0xinx" }]
+
+dependencies = [
+    "fastapi>=0.110.0",
+    "uvicorn>=0.29.0",
+    "websockets>=12.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "httpx>=0.27.0",
+]
+
+[project.scripts]
+omo-terminal = "omo_terminal.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/xn0xinx/omo-terminal"
+
+[tool.hatch.build.targets.wheel]
+packages = ["omo_terminal"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"omo_terminal/web" = "omo_terminal/web"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

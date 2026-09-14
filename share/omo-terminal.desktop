@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=OmoTerminal
+GenericName=Antigravity CRT Client
+Comment=Retro green-phosphor CRT front-end for Antigravity with animated ASCII Omo mascot
+Exec=omo-terminal
+Icon=utilities-terminal
+Terminal=false
+Categories=Development;Utility;
+Keywords=AI;Antigravity;Gemini;Terminal;CRT;
